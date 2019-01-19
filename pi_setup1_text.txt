@@ -1,0 +1,339 @@
+ping raspberrypi.local 
+
+sudo ssh-keygen -R 192.168.0.50
+
+sudo ssh pi@192.168.0.50
+
+df -h
+SD 카드의 용량 확인
+
+
+sudo apt-get install fonts-unfonts-core fonts-nanum fonts-nanum-coding im-config vim tree -y
+
+sudo reboot
+
+/etc/dhcpcd.conf //고정 IP
+sudo vi /etc/dhcpcd.conf
+
+git clone https://github.com/rasplay/Pi_Auto_Setup
+
+cd Pi_Auto_Setup && sudo sh pi_setup.sh
+
+sudo apt-get remove xrdp
+-> 모니터 화면이 안나오기 시작함.ㅠ.ㅠ 
+
+sudo vi /boot/config.txt
+hdmi_driver =2 부분에 주석처리
+
+
+
+sudo raspi-config 
+-> VNC 사용으로 바꿔 준다.
+자동으로 VNC를 설치하는데 혹시나. 인터넷이 안굴러가서 안되면 
+아래처럼 수동으로 해준다.
+
+sudo apt-get install realvnc-vnc-server realvnc-vnc-viewer
+ 
+
+
+sudo apt-get install apache2 php-common php libapache2-mod-php php-mcrypt php-curl php7.0-xml php-xml php-mysql php-pear libmcrypt-dev mcrypt
+
+
+sudo systemctl restart apache2.service
+
+
+sudo vi /etc/php/7.0/apache2/php.ini
+short_open_tag=off 부분을 찾아서 on 으로 바꿔 준다.
+
+
+
+
+sudo apt-get install mysql-server mysql-client
+
+sudo vi /etc/mysql/mariadb.conf.d/50-server.cnf
+bind-address = 127.0.0.1 부분이 있는데 여기에  #을 추가해 준다.
+
+my-sql 은 포트 3306을 사용한다. 따라서 포트를 열어준다.
+sudo iptables -A INPUT -p tcp --dport 3306 -j ACCEPT
+sudo iptables -A OUTPUT -p tcp --dport 3306 -j ACCEPT
+sudo iptables-save
+
+
+sudo service mysql restart
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+sudo apt-get autoremove
+sudo reboot
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+sudo chown pi -R /var/www
+sudo touch /var/www/html/phpinfo.php
+sudo vi /var/www/html/phpinfo.php
+안에 내용은
+<?
+phpinfo();
+?>
+
+
+sudo apt-get install phpmyadmin -y
+
+
+sudo mysql -u root -p
+
+암호설정 = 설정을 다 하고 난뒤에 한다.
+use mysql;
+update user set plugin='';
+SET PASSWORD FOR root@localhost=PASSWORD('변경할암호');
+FLUSH PRIVILEGES;
+\q
+
+
+CREATE DATABASE testdb;
+CREATE USER username@localhost IDENTIFIED BY 'userpassword'
+GRANT SELECT,INSERT,UPDATE,DELETE ON testdb.* TO 'username'@'localhost';
+FLUSH PRIVILEGES;
+
+
+DROP DATABASE DB이름;
+FLUSH PRIVILEGES;
+exit
+
+
+
+mysql -u root -p
+
+DROP DATABASE IF EXISTS roundcube_db; 
+CREATE DATABASE IF NOT EXISTS roundcube_db DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+
+GRANT SELECT, UPDATE, INSERT, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON roundcube_db.* TO 'roundcube_db'@'localhost' IDENTIFIED BY '[RC_DB_PASSWORD]';
+
+GRANT ALL PRIVILEGES ON roundcube_db.* TO '[YOUR_DB_ADMIN]'@'localhost' WITH GRANT OPTION;
+
+FLUSH PRIVILEGES;
+exit
+
+#### mysql 설치 ####
+sudo apt-get update
+sudo apt-get install mysql-server mysql-client
+
+제거
+service mysqld stop
+service mysqld start
+sudo apt-get remove --purge mysql-client mysql-server
+sudo apt get autoremove
+sudo apt-get clean
+
+
+
+OS 종료
+ sudo halt
+ sudo shutdown –h now 
+
+
+OS 재부팅
+ sudo reboot
+ sudo shutdown –r now 
+
+
+--------------------------
+
+Visual Studio Code 설치
+sudo -s
+. <( wget -O - https://code.headmelted.com/installers/apt.sh )
+
+sudo -s
+sudo apt-get install code-oss
+-> 다른 에디터도 많긴 한데.. 거.. 간단하게 굴리기엔 이늠이고
+또한 인텔리제이 같은넘도 유명하다만. 유료고... 무료중에서는 잴 빵빵한 지원을 하고 속도도 꽤 잘나온다. 고로 갯두.
+
+GUI 사용이기 때문에 바로 모니터 달아서 굴릴땐 쓸만하나
+VNC는 사용할 생각은 않는게 좋다. 
+---------------------------
+삼바설치
+
+sudo apt-get install samba samba-common-bin
+	//그냥 samba 만해도 나머지는 다 알아서 설치해준다.
+
+sudo smbpasswd -a jung
+	//samba계정 추가 및 비밀번호 설정 
+
+
+sudo vi /etc/samba/smb.conf
+가장 마지막 라인으로 간다.
+
+[jung]
+comment = samba server by jung
+path = /var/www
+valid user = jung
+writable = yes
+read only = no
+browseable = yes
+
+//이렇게 하고 저장 종료
+
+폴더로 지정한 /var/www
+권한을 줘야 할때도 있음
+sudo chmod 777 /var/www
+
+sudo service samba restart
+//에러메시작 이렇게 뜰때 
+Failed to restart samba.service: Unit samba.service is masked.
+//재시작이 안될때에는 아래처럼 간다.
+//처음 재시작 하면 안굴러간....
+
+sudo /etc/init.d/samba restart
+
+-------------------------------
+유저의 아뒤 비번이 안걸릴때
+sudo service smbd stop
+
+sudo useradd jung 
+sudo passwd jung
+새 UNIX 암호 입력:
+새 UNIX 암호 재입력:
+
+sudo smbpasswd -a jung
+New SMB password:
+Retype new SMB password:
+Added user jung. //이게 추가 되었다는 메시지다.
+
+//삼바에 추가 되었는지 확인
+sudo pdbedit -L
+jung:1001:
+
+//더자세하게 확인
+sudo pdbedit -L -v
+
+//일반 사용자가 할때는 자신의 ID로 접속한뒤에 
+smbpasswd
+
+//패스워드 변경은 root로 들어가서
+smbpasswd jung
+
+
+---------------------------
+사용자 추가 설정을 잠깐. 보안관련부분이다. 패스해도 된다.
+sudo adduser jung
+
+//sudo 퍼미션을 줄땐
+sudo adduser jung sudo
+
+//sudo 퍼미션 확인
+sudo su
+
+//기존의 pi 사용자를 삭제한다.
+sudo deluser pi
+
+//저렇게 해도 pi폴더가 남아 있음으로 삭제
+sudo deluser -remove-home pi
+
+
+//홈 보안을 위해서 sudo 마다 패스워드를 걸어준다.
+//겁나게 귀찮아 지지만 웹서버를 굴리거나 인터넷에 걸린 nas 를 굴린다면 설정해 둔다.
+//해킹을 당했을때 패스워드가 걸려 있으면 피해가 최소화 된다.
+sudo nano /etc/sudoers.d/010_pi-nopasswd
+
+pi ALL=(ALL) PASSWD: ALL
+
+------------------------
+//root가 사용자 조절 아래부터는 루트명령
+//사용자 삼바 사용하지 못하게 할때
+smbpasswd -d jung
+
+//다시 사용하게 할때
+smbpasswd -e jung
+
+//사용자 삭제시에는
+smbpasswd -x jung
+------------------------
+
+
+//MYsql 외부 접속
+
+sudo mysql -u root -p
+
+show databases;
+
+use mysql;
+
+select user, host, password from user;
+//아직 미완
+
+
+
+
+==========================
+다운로드된 이미지 작업
+맥에서
+diskutil list
+diskutil umountDisk /dev/disk[get-number-from-list]
+sudo dd if=Path/to/UbuntuMate.iso of=/dev/disk[get-number-from-list] bs=1024m
+
+==========================
+
+고정 IP 설정 파일
+/etc/dhcpcd.conf
+
+======
+
+
+dpkg -L python3.5 설치된 경로 나옴 
+
+
+======
+
+-------------------------
+ubunto 모델 3 b+ 에서 굴리기
+=> 일단 모델 3 버전이 필요하다.
+=> 우분투마테 (메이트)를 설치후 (모델3버전임)
+https://ubuntu-mate.org/raspberry-pi/
+16.04 mate
+
+마태 설치후 3버전으로 부팅한다.
+sudo raspi-config
+   advance -> overscan off
+
+$$$$아래부분은 안해도 된다.$$$$$$$$   
+sudo apt-get install geany //mouse pointer incres
+sudo geany
+
+vi /boots/cmdline.txt
+//한줄이 길게 나오는데 가장뒤에 한칸뛰고
+usbhid.mousepoll=0 
+//저장. reboot
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+//b+로 부팅후 가장먼저 
+sudo rpi-update
+
+sudo BRANCH=stable rpi-update
+
+//boot 에 3B+가 굴러가는 버전인 라즈비안과 같은 커널이 설치된다.
+
+=>와이파이가 안굴러간다.
+라즈비안에 있는 /lib/firmware/brcm
+이부분을 우분투마태(메이트)에 그대로 복사해서 넣는다.
+
+완료작업파일 주소
+https://www.dropbox.com/s/joi695auovhma2q/Ubuntu-mate%20rpi%203bplus.7z?dl=0
+
+부팅 user : pi
+    passwd : raspberry
+
+    부팅하자 마자 터미널에서 로그인 암호를 바꿔 준다.
+    sudo passwd pi 
+
+=========================
+모델 3버전으로 우분투를 부팅해서
+sudo apt update 
+sudo apt install raspberrypi-bootloader raspberrypi-kernel
+이렇게 가도 된다.
+
+그런데 뭐 같게도 커널이 3b+ 로 부팅할때 안 읽힌다는 에러가 뜬다.
+= 그런데도 실제 굴러간다. ㅡㅡ;; =
+
+까먹지 말고 부팅후 가장먼저 해주길 권한다.
+sudo BRANCH=stable rpi-update 
+=========================
+

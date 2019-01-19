@@ -1,0 +1,55 @@
+
+-------------------------
+ubunto 모델 3 b+ 에서 굴리기
+=> 일단 모델 3 버전이 필요하다.
+=> 우분투마테 (메이트)를 설치후 (모델3버전임)
+https://ubuntu-mate.org/raspberry-pi/
+16.04 mate
+
+마태 설치후 3버전으로 부팅한다.
+sudo raspi-config
+   advance -> overscan off
+
+$$$$아래부분은 안해도 된다.$$$$$$$$   
+sudo apt-get install geany //mouse pointer incres
+sudo geany
+
+vi /boots/cmdline.txt
+//한줄이 길게 나오는데 가장뒤에 한칸뛰고
+usbhid.mousepoll=0 
+//저장. reboot
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+//b+로 부팅후 가장먼저 
+sudo rpi-update
+
+sudo BRANCH=stable rpi-update
+
+//boot 에 3B+가 굴러가는 버전인 라즈비안과 같은 커널이 설치된다.
+
+=>와이파이가 안굴러간다.
+라즈비안에 있는 /lib/firmware/brcm
+이부분을 우분투마태(메이트)에 그대로 복사해서 넣는다.
+
+완료작업파일 주소
+https://www.dropbox.com/s/joi695auovhma2q/Ubuntu-mate%20rpi%203bplus.7z?dl=0
+
+부팅 user : pi
+    passwd : raspberry
+
+    부팅하자 마자 터미널에서 로그인 암호를 바꿔 준다.
+    sudo passwd pi 
+
+=========================
+모델 3버전으로 우분투를 부팅해서
+sudo apt update 
+sudo apt install raspberrypi-bootloader raspberrypi-kernel
+이렇게 가도 된다.
+
+그런데 뭐 같게도 커널이 3b+ 로 부팅할때 안 읽힌다는 에러가 뜬다.
+= 그런데도 실제 굴러간다. ㅡㅡ;; =
+
+까먹지 말고 부팅후 가장먼저 해주길 권한다.
+sudo BRANCH=stable rpi-update 
+
+=============================
