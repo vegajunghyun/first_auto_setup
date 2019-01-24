@@ -2,7 +2,7 @@
 
 sudo apt-get autoremove --purge realvnc*
 sudo apt-get install fonts-unfonts-core fonts-nanum fonts-nanum-coding im-config vim tree apache2 php-common php libapache2-mod-php php-mcrypt php-curl php7.0-xml php-xml php-mysql php-pear libmcrypt-dev mcrypt mysql-server mysql-client samba samba-common-bin python3 -y
-sudo apt-get -y update && sudo apt-get upgrade -y
+sudo apt-get update -y && sudo apt-get upgrade -y
 
 # X11 hangul Install
 sudo apt-get -y install fcitx-hangul
