@@ -1,6 +1,6 @@
 #우분투 처음 설정
 
-sudo apt install git tree vim net-tools fonts-unfonts-core fonts-nanum fonts-nanum-coding 
+sudo apt install git tree vim net-tools fonts-unfonts-core fonts-nanum fonts-nanum-coding  openssl python python3 net-tools -y 
 
 # X11 D2Coding-Font Install and Setting
 #wget https://github.com/naver/d2codingfont/releases/download/VER1.21/D2Coding-1.2.zip
@@ -11,6 +11,41 @@ sudo unzip D2Coding-Ver1.3.1-20180115.zip -d /usr/share/fonts/truetype/D2Coding/
 rm *.zip
 sudo rm -rf /usr/share/fonts/truetype/D2Coding/__MACOSX
 sudo fc-cache -f -v
+
+
+#자바를 설치 그러나 제대로 굴러가는 상황은 아님.
+sudo apt install openjdk-11-jdk-headless
+
+#위에 명령어가 어케 나왔는지 찾은 순서.
+
+#자바설치시에 확인.=원래는 -version 이지만 걍 -v 했더니 도움말 튀어 나옴
+# java -v
+#Command 'java' not found, but can be installed with:
+#sudo apt install openjdk-11-jre-headless
+#sudo apt install default-jre            
+#sudo apt install openjdk-8-jre-headless 
+
+#javac -v
+#Command 'javac' not found, but can be installed with:
+#sudo apt install openjdk-11-jdk-headless
+#sudo apt install default-jdk            
+#sudo apt install openjdk-8-jdk-headless 
+#sudo apt install ecj  
+
+#JDK를 설치하면 JRE는 따라오기 때문에 걍 JDK만 설치해 버림
+#다만 ejc는 모름. =standalone version of the Eclipse Java compiler
+#찾아보니 걍 이클립스 설치가 될지도..
+
+#자바 설치 이후 버전체크 -version 으로 써야된다.
+#java -version
+#openjdk version "11.0.1" 2018-10-16
+#OpenJDK Runtime Environment (build 11.0.1+13-Ubuntu-2ubuntu1)
+#OpenJDK 64-Bit Server VM (build 11.0.1+13-Ubuntu-2ubuntu1, mixed mode, sharing)
+
+#javac -version
+#javac 11.0.1
+
+#뭐 경로 설정 어쩌고 있는듯 하나. 쌩 무시해도 걍 굴러가는듯.경로 설정 어쩌고 있는듯 하나. 쌩 무시해도 걍 굴러가는듯.
 
 
 sudo apt-get update -y && sudo apt-get upgrade -y
