@@ -1,6 +1,6 @@
 #우분투 처음 설정
 
-sudo apt install git tree vim net-tools fonts-unfonts-core fonts-nanum fonts-nanum-coding  openssl python python3 net-tools -y 
+sudo apt install git tree vim net-tools fonts-unfonts-core fonts-nanum fonts-nanum-coding  openssl python python3 apt-transport-https -y 
 
 # X11 D2Coding-Font Install and Setting
 #wget https://github.com/naver/d2codingfont/releases/download/VER1.21/D2Coding-1.2.zip
