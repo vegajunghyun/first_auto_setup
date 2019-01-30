@@ -1,6 +1,6 @@
 #우분투 처음 설정
 
-sudo apt install git tree vim net-tools fonts-unfonts-core fonts-nanum fonts-nanum-coding  openssl python python3 apt-transport-https -y 
+sudo apt install git tree vim net-tools fonts-unfonts-core fonts-nanum fonts-nanum-coding  openssl python python3 apt-transport-https python-pip -y 
 
 # X11 D2Coding-Font Install and Setting
 #wget https://github.com/naver/d2codingfont/releases/download/VER1.21/D2Coding-1.2.zip
@@ -37,7 +37,7 @@ sudo apt install openjdk-11-jdk-headless
 #찾아보니 걍 이클립스 설치가 될지도..
 
 #자바 설치 이후 버전체크 -version 으로 써야된다.
-#java -version
+#java -version한방설
 #openjdk version "11.0.1" 2018-10-16
 #OpenJDK Runtime Environment (build 11.0.1+13-Ubuntu-2ubuntu1)
 #OpenJDK 64-Bit Server VM (build 11.0.1+13-Ubuntu-2ubuntu1, mixed mode, sharing)
@@ -47,5 +47,11 @@ sudo apt install openjdk-11-jdk-headless
 
 #뭐 경로 설정 어쩌고 있는듯 하나. 쌩 무시해도 걍 굴러가는듯.경로 설정 어쩌고 있는듯 하나. 쌩 무시해도 걍 굴러가는듯.
 
+#우분투로 뭔가 개발작업을 할때 기본적으로 설치할 놈을들 몽땅 한방설치
+#sudo apt-get install build-essential
+#위에 넘들 했으면 엔간하면 다 설치되어 있을꺼다.
 
 sudo apt update -y && sudo apt upgrade -y
+
+#리스트 업데이트 한넘을 확인해 보자.
+sudo apt list --upgradable
