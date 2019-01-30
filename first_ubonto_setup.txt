@@ -48,4 +48,4 @@ sudo apt install openjdk-11-jdk-headless
 #뭐 경로 설정 어쩌고 있는듯 하나. 쌩 무시해도 걍 굴러가는듯.경로 설정 어쩌고 있는듯 하나. 쌩 무시해도 걍 굴러가는듯.
 
 
-sudo apt-get update -y && sudo apt-get upgrade -y
+sudo apt update -y && sudo apt upgrade -y
